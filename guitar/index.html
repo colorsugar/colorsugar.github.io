@@ -575,7 +575,9 @@ function pageTune(app){
     loop();
   }
   function stop(){cancelAnimationFrame(raf); if(stream) stream.getTracks().forEach(t=>t.stop()); stream=null; $("#tStart").textContent="开始听音"}
-  function noMic(){return `<b>这里拿不到麦克风。</b>如果你在 Claude 的链接里打开，它不允许网页用麦克风；用电脑上那份文件版（我放在你 Mac 上的那份）就能自动听音。现在可以先点下面的弦，用标准音按耳朵对。`}
+  function noMic(){return location.hostname.endsWith("github.io")
+    ?`<b>没拿到麦克风权限。</b>点地址栏左边的图标，把"麦克风"改成允许，再点"开始听音"。现在也可以先点下面的弦，用标准音按耳朵对。`
+    :`<b>这里拿不到麦克风。</b>在 Claude 里打开时网页不能用麦克风，请改用 <a href="https://colorsugar.github.io/guitar/" target="_blank" rel="noopener">colorsugar.github.io/guitar</a> 这个地址，调音器就能自动听音。现在也可以先点下面的弦，用标准音按耳朵对。`}
   function show(f){
     const NAMES=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
     let target, ti;
