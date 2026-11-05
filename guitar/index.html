@@ -1,0 +1,742 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>六弦起步</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#1f6f5c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Sora:wght@500;700&display=swap">
+<style>
+/* Layout: 单列手机 App，底部五个标签；内容卡片在一条 640px 的中轴上 */
+:root{
+  --bg:#eef2ef; --surface:#ffffff; --surface2:#e3e9e5; --ink:#18201c; --muted:#56635c;
+  --accent:#1f6f5c; --accent-ink:#ffffff; --brass:#b9851f; --line:#cdd6d0;
+  --good:#2e8b57; --warn:#c0711c; --bad:#c0392b;
+  --wood:#6b4a2f; --string:#9aa59f;
+  --f-body:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --f-num:"Sora","Noto Sans SC",system-ui,sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111614; --surface:#1a211e; --surface2:#232c28; --ink:#e7eee9; --muted:#97a69e;
+  --accent:#4fbf9f; --accent-ink:#0d1a15; --brass:#e0b04a; --line:#2f3a35;
+  --good:#5cc98a; --warn:#e7a04f; --bad:#ef6b5c; --wood:#c9a27e; --string:#6e7b74; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111614; --surface:#1a211e; --surface2:#232c28; --ink:#e7eee9; --muted:#97a69e;
+  --accent:#4fbf9f; --accent-ink:#0d1a15; --brass:#e0b04a; --line:#2f3a35;
+  --good:#5cc98a; --warn:#e7a04f; --bad:#ef6b5c; --wood:#c9a27e; --string:#6e7b74; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px calc(96px + env(safe-area-inset-bottom,0px))}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px}
+.brand{font-weight:900;font-size:20px;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.brand svg{width:26px;height:26px}
+.minitimer{font-family:var(--f-num);font-size:14px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:99px;padding:4px 12px}
+h1{font-size:26px;line-height:1.3;margin:8px 0 4px;text-wrap:balance}
+h2{font-size:19px;margin:0 0 8px;text-wrap:balance}
+h3{font-size:16px;margin:16px 0 4px}
+p{margin:0 0 10px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.stack{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.card{background:var(--surface);border-radius:var(--r);padding:16px;border:1px solid var(--line)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 14px;font-weight:500}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+.btn.big{padding:14px 18px;font-size:17px}
+.btn[disabled]{opacity:.45;cursor:default}
+.chip{display:inline-block;font-size:13px;padding:2px 10px;border-radius:99px;background:var(--surface2);color:var(--muted)}
+.chip.on{background:var(--accent);color:var(--accent-ink)}
+select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;color:var(--muted);text-decoration:none;font-size:12px}
+nav.tabs a svg{width:24px;height:24px}
+nav.tabs a.on{color:var(--accent);font-weight:700}
+/* 课程路线 */
+.path{display:flex;flex-direction:column;gap:0;position:relative}
+.step{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;text-decoration:none;color:inherit;padding:10px 0}
+.dot{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-num);font-weight:700;background:var(--surface);border:2px solid var(--line);position:relative;z-index:1}
+.step.done .dot{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.step.next .dot{border-color:var(--brass);color:var(--brass);box-shadow:0 0 0 4px color-mix(in srgb,var(--brass) 20%,transparent)}
+.path::before{content:"";position:absolute;left:20px;top:30px;bottom:30px;width:2px;background:var(--line)}
+.step .t{font-weight:700}
+.step .d{font-size:14px;color:var(--muted)}
+.unit{font-size:13px;font-weight:700;color:var(--brass);letter-spacing:.08em;margin:14px 0 2px 56px}
+.lesson-body ul,.lesson-body ol{padding-left:22px;margin:0 0 10px}
+.lesson-body li{margin-bottom:4px}
+.tip{border-left:4px solid var(--brass);background:var(--surface2);padding:10px 12px;border-radius:0 10px 10px 0;margin:10px 0}
+.task{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--line)}
+.task input{width:20px;height:20px;margin-top:3px;accent-color:var(--accent)}
+.diagrams{display:flex;flex-wrap:wrap;gap:12px}
+.cd{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 6px 4px;text-align:center;width:118px;border-width:1px}
+.cd button{border:0;background:none;padding:0;width:100%}
+.cd .nm{font-family:var(--f-num);font-weight:700;font-size:18px;line-height:1.2}
+.cd .cn{font-size:12px;color:var(--muted)}
+.cd svg{width:100%;height:auto;display:block}
+svg text{font-family:var(--f-num)}
+/* 调音器 */
+.tuner{text-align:center}
+.note-big{font-family:var(--f-num);font-size:84px;font-weight:700;line-height:1}
+.note-big sub{font-size:28px;color:var(--muted);vertical-align:baseline}
+.hz{font-family:var(--f-num);color:var(--muted);font-variant-numeric:tabular-nums}
+.meter{position:relative;height:56px;margin:14px 0 6px}
+.meter .scale{position:absolute;inset:24px 0 auto;height:8px;border-radius:99px;background:linear-gradient(90deg,var(--bad),var(--warn) 35%,var(--good) 47%,var(--good) 53%,var(--warn) 65%,var(--bad))}
+.meter .needle{position:absolute;top:8px;width:4px;height:40px;background:var(--ink);border-radius:2px;left:50%;transform:translateX(-50%);transition:left .12s linear}
+.meter .ticks{position:absolute;inset:auto 0 0;display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-family:var(--f-num)}
+.verdict{font-size:20px;font-weight:700;min-height:32px}
+.verdict.ok{color:var(--good)} .verdict.lo,.verdict.hi{color:var(--warn)}
+.strings{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.strings button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 0;line-height:1.2}
+.strings button b{display:block;font-family:var(--f-num);font-size:20px}
+.strings button span{font-size:11px;color:var(--muted)}
+.strings button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.strings button.on span{color:inherit}
+.strings button.hit{border-color:var(--good);box-shadow:inset 0 0 0 2px var(--good)}
+/* 节奏 */
+.beats{display:grid;gap:6px}
+.beat{border-radius:10px;background:var(--surface2);text-align:center;padding:8px 0;transition:background .05s}
+.beat .ar{font-size:26px;font-weight:900;line-height:1.1;height:30px}
+.beat .lb{font-family:var(--f-num);font-size:12px;color:var(--muted)}
+.beat.now{background:var(--accent);color:var(--accent-ink)}
+.beat.now .lb{color:inherit}
+.bpm{font-family:var(--f-num);font-size:44px;font-weight:700;font-variant-numeric:tabular-nums;min-width:3ch;text-align:center}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.prog{display:flex;gap:6px;flex-wrap:wrap}
+.prog span{font-family:var(--f-num);font-weight:700;padding:4px 10px;border-radius:8px;background:var(--surface2)}
+.prog span.now{background:var(--brass);color:#fff}
+.nowchord{display:flex;gap:14px;align-items:center}
+.nowchord .big{font-family:var(--f-num);font-size:48px;font-weight:700}
+/* 曲子 */
+.sheet{overflow-x:auto}
+.line{display:flex;flex-wrap:wrap;gap:2px 0;margin-bottom:12px}
+.seg{display:inline-flex;flex-direction:column;padding-right:6px}
+.seg .c{font-family:var(--f-num);font-weight:700;color:var(--accent);font-size:15px;min-height:22px}
+.seg .w{font-size:17px}
+/* 一分钟换和弦 */
+.tapbtn{width:100%;padding:28px 0;border-radius:16px;border:0;background:var(--accent);color:var(--accent-ink);font-size:22px;font-weight:900}
+.count{font-family:var(--f-num);font-size:56px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.stat{display:flex;gap:18px;flex-wrap:wrap}
+.stat div{display:flex;flex-direction:column}
+.stat b{font-family:var(--f-num);font-size:28px;line-height:1.1}
+.stat span{font-size:13px;color:var(--muted)}
+.gtr{width:100%;height:auto;max-width:100%}
+.notice{background:var(--surface2);border-radius:10px;padding:10px 12px;font-size:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="var(--accent)"/><circle cx="16" cy="16" r="6" fill="var(--bg)"/><g stroke="var(--accent-ink)" stroke-width="1.2"><line x1="10" y1="2" x2="10" y2="30"/><line x1="13.6" y1="1" x2="13.6" y2="31"/><line x1="18.4" y1="1" x2="18.4" y2="31"/><line x1="22" y1="2" x2="22" y2="30"/></g></svg>六弦起步</div>
+    <button class="minitimer" id="miniTimer" hidden></button>
+  </header>
+  <main id="app"></main>
+</div>
+
+<nav class="tabs" id="tabs">
+  <a href="#learn" data-tab="learn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h11a3 3 0 0 1 3 3v12H7a3 3 0 0 1-3-3z"/><path d="M8 9h6M8 13h6"/></svg>课程</a>
+  <a href="#tune" data-tab="tune"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l4-6"/></svg>调音</a>
+  <a href="#chords" data-tab="chords"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M5 8h14M5 13h14M10 3v18M14 3v18"/><circle cx="12" cy="10.5" r="1.6" fill="currentColor"/></svg>和弦</a>
+  <a href="#rhythm" data-tab="rhythm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8l-3-17h-2z"/><path d="M12 15l5-7"/></svg>节奏</a>
+  <a href="#songs" data-tab="songs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>曲子</a>
+</nav>
+
+<script>
+"use strict";
+/* ---------------- 存储（只存在本机浏览器） ---------------- */
+const store={
+  get(k,d){try{const v=localStorage.getItem("gtr."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("gtr."+k,JSON.stringify(v))}catch(e){}}
+};
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------------- 和弦数据：frets 从 6 弦（最粗）到 1 弦，-1 = 不弹 ---------------- */
+const CHORDS={
+  Em:{cn:"E 小调",f:[0,2,2,0,0,0],g:[0,2,3,0,0,0],lv:1},
+  Em7:{cn:"E 小七（一指版）",f:[0,2,0,0,0,0],g:[0,2,0,0,0,0],lv:1},
+  Am:{cn:"A 小调",f:[-1,0,2,2,1,0],g:[0,0,2,3,1,0],lv:1},
+  C:{cn:"C 大调",f:[-1,3,2,0,1,0],g:[0,3,2,0,1,0],lv:1},
+  G:{cn:"G 大调",f:[3,2,0,0,0,3],g:[2,1,0,0,0,3],lv:1},
+  D:{cn:"D 大调",f:[-1,-1,0,2,3,2],g:[0,0,0,1,3,2],lv:1},
+  E:{cn:"E 大调",f:[0,2,2,1,0,0],g:[0,2,3,1,0,0],lv:2},
+  A:{cn:"A 大调",f:[-1,0,2,2,2,0],g:[0,0,1,2,3,0],lv:2},
+  Dm:{cn:"D 小调",f:[-1,-1,0,2,3,1],g:[0,0,0,2,3,1],lv:2},
+  Fmaj7:{cn:"F 大七（F 的简化版）",f:[-1,-1,3,2,1,0],g:[0,0,3,2,1,0],lv:2},
+  Cadd9:{cn:"C 加九",f:[-1,3,2,0,3,0],g:[0,2,1,0,3,0],lv:2},
+  Asus2:{cn:"A 挂二",f:[-1,0,2,2,0,0],g:[0,0,1,2,0,0],lv:2},
+  Dsus4:{cn:"D 挂四",f:[-1,-1,0,2,3,3],g:[0,0,0,1,2,3],lv:2},
+  G7:{cn:"G 属七",f:[3,2,0,0,0,1],g:[3,2,0,0,0,1],lv:2},
+  C7:{cn:"C 属七",f:[-1,3,2,3,1,0],g:[0,3,2,4,1,0],lv:3},
+  A7:{cn:"A 属七",f:[-1,0,2,0,2,0],g:[0,0,2,0,3,0],lv:2},
+  D7:{cn:"D 属七",f:[-1,-1,0,2,1,2],g:[0,0,0,2,1,3],lv:2},
+  E7:{cn:"E 属七",f:[0,2,0,1,0,0],g:[0,2,0,1,0,0],lv:2},
+  Fs:{nm:"F",cn:"F 小横按（4 弦版）",f:[-1,-1,3,2,1,1],g:[0,0,3,2,1,1],barre:{fret:1,from:4,to:5},lv:3},
+  F:{cn:"F 大横按",f:[1,3,3,2,1,1],g:[1,3,4,2,1,1],barre:{fret:1,from:0,to:5},lv:4},
+  Bm:{cn:"B 小调（横按）",f:[-1,2,4,4,3,2],g:[0,1,3,4,2,1],barre:{fret:2,from:1,to:5},lv:4},
+};
+const chordName=k=>(CHORDS[k]&&CHORDS[k].nm)||k;
+const OPEN_MIDI=[40,45,50,55,59,64]; // E2 A2 D3 G3 B3 E4
+const STRINGS=[
+  {n:6,note:"E",oct:2,midi:40,hint:"最粗"},
+  {n:5,note:"A",oct:2,midi:45,hint:""},
+  {n:4,note:"D",oct:3,midi:50,hint:""},
+  {n:3,note:"G",oct:3,midi:55,hint:""},
+  {n:2,note:"B",oct:3,midi:59,hint:""},
+  {n:1,note:"E",oct:4,midi:64,hint:"最细"},
+];
+const midiHz=m=>440*Math.pow(2,(m-69)/12);
+
+function chordSVG(key){
+  const c=CHORDS[key]; if(!c) return "";
+  const frets=c.f.filter(x=>x>0); const max=Math.max(0,...frets); const min=frets.length?Math.min(...frets):1;
+  const base=max>4?min:1; const X=i=>18+i*16.8, Y=k=>34+k*22;
+  let s=`<svg viewBox="0 0 120 150" role="img" aria-label="${esc(chordName(key))} 和弦指法图">`;
+  for(let k=0;k<=5;k++) s+=`<line x1="18" x2="102" y1="${Y(k)}" y2="${Y(k)}" stroke="var(--muted)" stroke-width="${k===0&&base===1?5:1.2}"/>`;
+  for(let i=0;i<6;i++) s+=`<line x1="${X(i)}" x2="${X(i)}" y1="${Y(0)}" y2="${Y(5)}" stroke="var(--muted)" stroke-width="${1.6-i*0.15}"/>`;
+  if(base>1) s+=`<text x="4" y="${Y(0)+15}" font-size="11" fill="var(--muted)">${base}</text>`;
+  if(c.barre){const b=c.barre,y=Y(b.fret-base)+11;s+=`<rect x="${X(b.from)-7}" y="${y-7}" width="${X(b.to)-X(b.from)+14}" height="14" rx="7" fill="var(--accent)"/>`}
+  c.f.forEach((f,i)=>{
+    if(f<0) s+=`<text x="${X(i)}" y="25" font-size="13" text-anchor="middle" fill="var(--muted)">×</text>`;
+    else if(f===0) s+=`<circle cx="${X(i)}" cy="21" r="4.5" fill="none" stroke="var(--muted)" stroke-width="1.5"/>`;
+    else{
+      const y=Y(f-base)+11;
+      const inBarre=c.barre&&f===c.barre.fret&&i>=c.barre.from&&i<=c.barre.to;
+      if(!inBarre) s+=`<circle cx="${X(i)}" cy="${y}" r="7.5" fill="var(--accent)"/>`;
+      if(c.g[i]&&(!inBarre||i===c.barre.from)) s+=`<text x="${X(i)}" y="${y+4}" font-size="11" font-weight="700" text-anchor="middle" fill="var(--accent-ink)">${c.g[i]}</text>`;
+    }
+  });
+  ["6","5","4","3","2","1"].forEach((n,i)=>s+=`<text x="${X(i)}" y="146" font-size="9" text-anchor="middle" fill="var(--muted)">${n}</text>`);
+  return s+"</svg>";
+}
+function chordCard(key){
+  return `<div class="cd"><button data-play="${key}" aria-label="听 ${esc(chordName(key))} 和弦"><div class="nm">${esc(chordName(key))}</div><div class="cn">${esc(CHORDS[key].cn)}</div>${chordSVG(key)}</button></div>`;
+}
+
+/* ---------------- 声音：拨弦合成（Karplus-Strong） ---------------- */
+let AC=null;
+function ac(){ if(!AC){AC=new (window.AudioContext||window.webkitAudioContext)()} if(AC.state==="suspended") AC.resume(); return AC }
+const pluckCache={};
+function pluckBuffer(midi){
+  const ctx=ac(); if(pluckCache[midi]) return pluckCache[midi];
+  const sr=ctx.sampleRate, f=midiHz(midi), N=Math.max(2,Math.round(sr/f-0.5)), len=Math.floor(sr*2.4);
+  const buf=ctx.createBuffer(1,len,sr), d=buf.getChannelData(0), ring=new Float32Array(N);
+  for(let i=0;i<N;i++) ring[i]=Math.random()*2-1;
+  // 轻微低通，让声音更像尼龙/钢弦而不是噪声
+  for(let i=1;i<N;i++) ring[i]=0.6*ring[i]+0.4*ring[i-1];
+  const decay=midi<50?0.996:0.994; let p=0;
+  for(let i=0;i<len;i++){const n=(p+1)%N;const v=ring[p];d[i]=v;ring[p]=decay*0.5*(v+ring[n]);p=n}
+  return pluckCache[midi]=buf;
+}
+const master=()=>{const ctx=ac(); if(!ac.m){ac.m=ctx.createGain();ac.m.gain.value=0.5;ac.m.connect(ctx.destination)} return ac.m};
+function pluck(midi,t,vel=0.6){
+  const ctx=ac(), src=ctx.createBufferSource(), g=ctx.createGain();
+  src.buffer=pluckBuffer(midi); g.gain.value=vel; src.connect(g); g.connect(master()); src.start(t);
+  return {src,g};
+}
+const ringing=[];
+function strum(key,t,dir="D",vel=0.55){
+  const c=CHORDS[key]; if(!c) return; const ctx=ac(); t=t??ctx.currentTime+0.02;
+  ringing.splice(0).forEach(r=>{try{r.g.gain.setTargetAtTime(0,t,0.03)}catch(e){}});
+  let idx=[0,1,2,3,4,5]; if(dir==="U") idx=[5,4,3,2]; // 上扫只扫细的几根
+  idx.forEach((i,k)=>{const f=c.f[i]; if(f<0) return; ringing.push(pluck(OPEN_MIDI[i]+f,t+k*(dir==="U"?0.012:0.016),dir==="U"?vel*0.7:vel))});
+}
+function refTone(midi){
+  // 调音用的标准音：用振荡器保证音高精确
+  const ctx=ac(), t=ctx.currentTime, g=ctx.createGain(); g.connect(master());
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.5,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+2.6);
+  [[1,"triangle",1],[2,"sine",0.35],[3,"sine",0.15]].forEach(([h,type,a])=>{
+    const o=ctx.createOscillator(),og=ctx.createGain(); o.type=type; o.frequency.value=midiHz(midi)*h; og.gain.value=a; o.connect(og); og.connect(g); o.start(t); o.stop(t+2.7);
+  });
+}
+function click(t,accent){
+  const ctx=ac(), o=ctx.createOscillator(), g=ctx.createGain();
+  o.frequency.value=accent?1600:1050; g.gain.setValueAtTime(accent?0.55:0.32,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.05);
+  o.connect(g); g.connect(master()); o.start(t); o.stop(t+0.06);
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-play]"); if(b) strum(b.dataset.play)});
+
+/* ---------------- 课程内容 ---------------- */
+const go=(hash,label)=>`<a class="btn" href="${hash}">${label}</a>`;
+const LESSONS=[
+ {unit:"第一站 · 认识吉他",t:"认识你的吉他",m:5,goal:"叫得出吉他各部分的名字，知道 1 弦到 6 弦是哪根。",body:`
+  <div class="card" style="padding:8px">${guitarSVG()}</div>
+  <h3>各部分叫什么</h3>
+  <ul><li><b>琴头和弦钮</b>：拧弦钮让弦变紧或变松，就是调音。</li>
+  <li><b>琴枕</b>：琴头和琴颈交界那条白色小横条。</li>
+  <li><b>品丝和品格</b>：琴颈上一根根金属条叫品丝，两根品丝之间的格子叫品格。离琴头最近的是第 1 品。</li>
+  <li><b>音孔</b>：右手大致在音孔上方扫弦。</li>
+  <li><b>琴桥</b>：弦固定在琴身上的地方。</li></ul>
+  <h3>弦的编号（最容易搞反）</h3>
+  <p>抱着吉他往下看：<b>离你脸最近、最粗的是 6 弦</b>，离地面最近、最细的是 1 弦。以后说"5 弦 3 品"，意思是第 5 根弦、按在第 3 个格子里。</p>
+  <div class="tip">口诀：<b>粗六细一</b>。空弦的音从粗到细是 E A D G B E。</div>`,
+  tasks:["抱起吉他，从粗到细把 6 根弦各弹一下，嘴里数 6、5、4、3、2、1","找到第 1 品、第 3 品、第 5 品（很多琴第 5 品有圆点标记）"]},
+ {unit:"",t:"正确的持琴姿势",m:5,goal:"坐得舒服、琴不会滑，左右手放在对的位置。",body:`
+  <h3>坐姿</h3>
+  <ul><li>坐在没有扶手的椅子前半部分，背挺直。</li>
+  <li>琴身凹进去的"腰"放在右腿上，琴颈稍微往上翘一点。</li>
+  <li>琴背贴着肚子和胸口，别把琴放平去看琴颈。想看指板时歪一下头就行。</li></ul>
+  <h3>右手</h3>
+  <p>右小臂搭在琴身最高的边上，手自然落在音孔上方，这是扫弦的位置。</p>
+  <h3>左手</h3>
+  <ul><li>大拇指放在琴颈背后中间，大概在食指和中指之间的对面，不要整只手握住琴颈。</li>
+  <li>手指弯成拱形，<b>用指尖</b>按弦，按在品格里<b>靠近右边那根品丝</b>的地方，最省力、声音最干净。</li></ul>
+  <div class="tip">刚开始指尖会疼，两三周后长出茧就好了。每次练 10～15 分钟，休息一下再练，比一次练一小时更有效。</div>`,
+  tasks:["照镜子检查：琴颈是不是微微往上翘","左手大拇指在琴颈背后，手掌和琴颈之间留出一个鸡蛋大的空隙"]},
+ {unit:"",t:"给吉他调音",m:8,goal:"用调音器把 6 根弦都调准。每次练琴前都先调。",body:`
+  <ol><li>打开下面的调音器，允许使用麦克风。</li>
+  <li>从 6 弦开始，单独弹一根空弦，看屏幕：<b>偏低就把弦拧紧</b>，<b>偏高就放松</b>。</li>
+  <li>每次只拧一点点，弹一下看一下，指针到中间变绿就准了。</li>
+  <li>6 根都调完，再从头快速检查一遍，因为调后面的弦时前面的会轻微变化。</li></ol>
+  <div class="tip">拧之前先确认：你拧的弦钮连着的就是你在弹的那根弦。新手最常见的事故是拧错弦把弦拧断。不确定往哪边是紧，就边弹边慢慢拧，听音是变高还是变低。</div>
+  <p>麦克风用不了的时候，可以点调音器下面的"标准音"，用耳朵对，听到两个声音不再"嗡嗡"地起伏就准了。</p>
+  <div class="row">${go("#tune","打开调音器")}</div>`,
+  tasks:["把 6 根弦全部调到绿色","明天练琴前，不看这一课，自己再调一次"]},
+ {unit:"第二站 · 让手动起来",t:"右手拨弦和拨片",m:6,goal:"用拨片稳定地拨响单根弦，也能扫过一组弦。",body:`
+  <h3>拿拨片</h3>
+  <p>右手食指弯曲，拨片平放在食指第一节侧面，大拇指压在上面，只露出 2～3 毫米尖。握得太紧会僵，太松会掉，像捏着一张纸那样就好。</p>
+  <p>没有拨片也没关系，可以先用大拇指或食指指甲扫。</p>
+  <h3>单弦练习</h3>
+  <ul><li>每根空弦向下拨 4 下，从 6 弦到 1 弦，再回来。</li>
+  <li>动作从手腕出发，小臂基本不动。</li></ul>
+  <h3>扫弦初体验</h3>
+  <p>手腕放松，像甩掉手上的水一样，从 6 弦往 1 弦一口气扫下去。声音"唰"一下连成一片就对了。</p>`,
+  tasks:["每根弦拨 4 下，来回 3 遍","放松地向下扫 20 下，不要用力砸弦"]},
+ {unit:"",t:"左手热身：爬格子",m:8,goal:"让 4 根手指各自独立，按弦有力而不乱。",body:`
+  <p>"爬格子"是所有吉他手的基本功：<b>食指按 1 品，中指 2 品，无名指 3 品，小指 4 品</b>，每按一个音拨一下。</p>
+  <ol><li>从 6 弦开始：1 品、2 品、3 品、4 品，各弹一下。</li>
+  <li>换到 5 弦，再 1、2、3、4。一直爬到 1 弦。</li>
+  <li>按住的手指先别抬，下一个手指按下后再抬起前一个。</li></ol>
+  <div class="tip">慢比快重要。打开节拍器设 60，每响一下弹一个音。能连续两遍不出杂音，再加到 70。</div>
+  <div class="row">${go("#rhythm-click60","打开节拍器（60）")}</div>`,
+  tasks:["跟着 60 的节拍完整爬一遍","小指够不到 4 品时，可以先只练 1、2、3 品"]},
+ {unit:"第三站 · 第一批和弦",t:"第一个和弦：Em 和 Am",m:10,goal:"按出干净的 Em 和 Am，并能在两者之间切换。",body:`
+  <p>和弦就是同时按住几个音一起扫。看懂指法图：竖线是弦（左边是 6 弦），横线是品丝，最上面粗线是琴枕；圆点里的数字是用哪根手指（1 食指、2 中指、3 无名指、4 小指）；○ 表示空弦也要弹，× 表示这根弦不弹。</p>
+  <div class="diagrams">${chordCard("Em")}${chordCard("Am")}</div>
+  <p class="small muted">点和弦图可以听到它应该是什么声音。</p>
+  <h3>检查方法</h3>
+  <p>按好后，从 6 弦到 1 弦一根一根慢慢弹。哪根发闷或"噗"的一声，就是手指没按实或者碰到了旁边的弦。调整手指弯曲的角度，直到每根都响亮。</p>
+  <div class="tip">Em 换 Am：你的 2、3 指形状不变，整体往下挪一根弦，再加上食指。找到这种"不动的手指"，换和弦就快很多。</div>`,
+  tasks:["Em 每根弦单独弹都清楚","Am 每根弦单独弹都清楚（6 弦不弹）","Em 和 Am 来回换 10 次"]},
+ {unit:"",t:"C 和 G：最常用的两个和弦",m:12,goal:"按出 C 和 G，和 Em、Am 一起凑成很多流行歌的和弦。",body:`
+  <div class="diagrams">${chordCard("C")}${chordCard("G")}</div>
+  <ul><li><b>C</b>：手指像一条斜线从 5 弦 3 品走到 2 弦 1 品。注意无名指不能碰到 4 弦，食指不能碰到 1 弦。</li>
+  <li><b>G</b>：手要张开一点，小指够不到的话可以用 3 指按 1 弦 3 品，用 1、2 指按 5、6 弦。</li></ul>
+  <div class="tip">C 换 Am 只需要动一根手指（无名指从 5 弦移到 3 弦），先练这对。</div>
+  <h3>一分钟换和弦</h3>
+  <p>这是最有效的和弦练习：两只和弦来回换，数一分钟里换了多少次。到"和弦"页的挑战里记录成绩，每天都能看到自己的进步。</p>
+  <div class="row">${go("#chords-challenge","去做一分钟换和弦")}</div>`,
+  tasks:["C 和 G 各自每根弦都清楚","C ↔ Am 一分钟换 20 次以上","G ↔ C 一分钟换 15 次以上"]},
+ {unit:"",t:"D 和弦与换和弦技巧",m:10,goal:"学会 D，掌握提前看、手指先到位的换和弦思路。",body:`
+  <div class="diagrams">${chordCard("D")}${chordCard("Em7")}</div>
+  <p><b>D</b> 只弹 4 根细弦（6、5 弦不弹），三个手指组成一个小三角。</p>
+  <h3>换和弦的三个窍门</h3>
+  <ol><li><b>提前看</b>：还在弹这个和弦的最后一下时，眼睛和脑子已经在想下一个。</li>
+  <li><b>整体移动</b>：手指一起抬、一起落，而不是一根一根按下去。</li>
+  <li><b>宁可空一拍</b>：换不过来时，右手继续扫空弦也不要停，节奏比准确更重要。</li></ol>
+  <p class="small muted">Em7 这个一根手指的和弦先放这里，后面的曲子会用来偷懒替换 Em。</p>`,
+  tasks:["D 和弦每根弦都清楚","G → D → Em → C 慢慢循环 5 遍"]},
+ {unit:"第四站 · 节奏",t:"扫弦节奏入门",m:12,goal:"跟着节拍器稳定扫弦，学会两个最常用的节奏型。",body:`
+  <p>先数拍子：一小节 4 拍，嘴里数"1 2 3 4"。每拍再分成两半就是"1 嗒 2 嗒 3 嗒 4 嗒"。</p>
+  <h3>右手永远像钟摆</h3>
+  <p>数到数字时手往下，数到"嗒"时手往上。<b>不管这一下扫不扫到弦，手都在摆</b>，只是不扫的时候让手离开弦。这样节奏才稳。</p>
+  <h3>两个节奏型</h3>
+  <ol><li><b>全下扫</b>：↓ ↓ ↓ ↓，每拍扫一下。</li>
+  <li><b>民谣万能型</b>：↓ ↓↑ ↑↓↑（数"1、2嗒、嗒3嗒"…）。这一个节奏型够你弹几百首歌。</li></ol>
+  <div class="row">${go("#rhythm-folk","去跟练民谣节奏")}</div>`,
+  tasks:["节拍器 70，用 Em 全下扫 4 小节不乱","民谣节奏型用 C 和 G 各弹 4 小节","节拍器 70，C G Am Em 每个和弦一小节循环"]},
+ {unit:"",t:"四个和弦弹一首歌",m:12,goal:"用 C G Am F(或 Fmaj7) 这种万能进行，完整弹下一首歌。",body:`
+  <p>很多流行歌都是同样几组和弦反复。先用简化的 <b>Fmaj7</b> 代替难按的 F：</p>
+  <div class="diagrams">${chordCard("Fmaj7")}${chordCard("Dm")}</div>
+  <p>经典进行（帕赫贝尔《卡农》的和弦，已是公版）：<b>C G Am Em F C F G</b>，每个和弦一小节。</p>
+  <div class="row">${go("#songs","去曲子页选一首")}${go("#rhythm-canon","跟练卡农进行")}</div>`,
+  tasks:["卡农进行用全下扫完整弹 2 遍","选一首入门曲子从头弹到尾，不停下来"]},
+ {unit:"第五站 · 进阶",t:"分解和弦（指弹入门）",m:12,goal:"用手指一根根拨出和弦，弹出温柔的伴奏。",body:`
+  <p>右手手指分工：<b>拇指管 6、5、4 弦（弹低音）</b>，食指管 3 弦，中指管 2 弦，无名指管 1 弦。</p>
+  <h3>基本型（4/4 拍）</h3>
+  <p>低音 → 3 → 2 → 1 → 2 → 3 （再加 2 → 3 补满一小节），也就是 <b>T 3 2 1 2 3 2 3</b>。</p>
+  <ul><li>C 和 Am 的低音在 5 弦，G 和 Em 的低音在 6 弦，D 的低音在 4 弦。</li>
+  <li>左手按好整个和弦，右手只负责拨。</li></ul>
+  <div class="tip">先极慢，每个音都清楚，比快但乱好听得多。</div>`,
+  tasks:["C 和弦用分解型弹 4 小节","C Am F(用 Fmaj7) G 用分解型循环"]},
+ {unit:"",t:"F 和弦与横按",m:15,goal:"认识横按，先拿下 4 弦小横按版本的 F。",body:`
+  <p>F 是新手的第一道坎，很多人在这里放弃。所以分三步走：</p>
+  <div class="diagrams">${chordCard("Fmaj7")}${chordCard("Fs")}${chordCard("F")}</div>
+  <ol><li>先用 Fmaj7 代替（已经会了）。</li>
+  <li>再练小横按：食指平放同时压住 1、2 弦的 1 品。</li>
+  <li>最后才是食指压住全部 6 根弦的大横按。</li></ol>
+  <div class="tip">横按靠的不是捏得多用力，而是手臂往回拉的重量。食指稍微侧过来，用骨头比较硬的侧面压弦。按不响是正常的，大部分人要练几周。</div>`,
+  tasks:["小横按 F 的 4 根弦都能响","C → F（小横按）→ G 慢慢循环"]},
+];
+function guitarSVG(){
+  return `<svg class="gtr" viewBox="0 0 600 200" role="img" aria-label="吉他各部分示意图">
+  <path d="M250 100 C250 30 330 20 380 45 C410 60 430 60 460 45 C520 15 590 40 590 100 C590 160 520 185 460 155 C430 140 410 140 380 155 C330 180 250 170 250 100Z" fill="color-mix(in srgb,var(--brass) 30%,var(--surface))" stroke="var(--wood)" stroke-width="2"/>
+  <circle cx="400" cy="100" r="26" fill="var(--ink)" opacity=".85"/>
+  <rect x="500" y="80" width="14" height="40" rx="3" fill="var(--wood)"/>
+  <rect x="70" y="84" width="200" height="32" fill="var(--wood)"/>
+  ${[0,1,2,3,4,5,6,7,8].map(i=>`<line x1="${90+i*22}" x2="${90+i*22}" y1="84" y2="116" stroke="var(--line)" stroke-width="2"/>`).join("")}
+  <circle cx="189" cy="100" r="3" fill="var(--surface)"/><circle cx="233" cy="100" r="3" fill="var(--surface)"/>
+  <rect x="66" y="82" width="6" height="36" fill="var(--surface)" stroke="var(--muted)"/>
+  <path d="M10 76 L66 82 L66 118 L10 124Z" fill="var(--wood)"/>
+  ${[0,1,2].map(i=>`<circle cx="${22+i*16}" cy="72" r="6" fill="var(--muted)"/><circle cx="${22+i*16}" cy="128" r="6" fill="var(--muted)"/>`).join("")}
+  ${[0,1,2,3,4,5].map(i=>`<line x1="66" x2="507" y1="${87+i*5.2}" y2="${87+i*5.2}" stroke="var(--string)" stroke-width="${1.8-i*0.22}"/>`).join("")}
+  <g font-size="13" fill="var(--ink)" font-family="var(--f-body)">
+   <text x="8" y="22">琴头 · 弦钮</text><line x1="40" y1="28" x2="38" y2="62" stroke="var(--muted)"/>
+   <text x="56" y="176">琴枕</text><line x1="70" y1="160" x2="69" y2="120" stroke="var(--muted)"/>
+   <text x="130" y="22">品丝 / 品格（第 1、2、3…品）</text><line x1="160" y1="28" x2="134" y2="82" stroke="var(--muted)"/>
+   <text x="372" y="196">音孔</text><line x1="388" y1="182" x2="398" y2="128" stroke="var(--muted)"/>
+   <text x="500" y="196">琴桥</text><line x1="512" y1="182" x2="508" y2="122" stroke="var(--muted)"/>
+   <text x="532" y="88" font-size="11" fill="var(--muted)">6弦</text><text x="532" y="122" font-size="11" fill="var(--muted)">1弦</text>
+  </g></svg>`;
+}
+
+/* ---------------- 曲子（全部是公版曲目） ---------------- */
+const SONGS=[
+ {id:"star",t:"小星星",key:"C",bpm:80,pat:"down4",chords:["C","F","G"],note:"法国民歌，最简单的三和弦歌。每两个字换一次也没关系，跟着唱慢慢来。",
+  lines:[[["C","一闪一闪"],["F","亮晶"],["C","晶"]],[["F","满天都是"],["C","小星"],["G","星"],["C",""]],[["C","挂在天上"],["F","放光"],["C","明"],["G",""]],[["C","好像许多"],["F","小眼"],["C","睛"],["G",""]],[["C","一闪一闪"],["F","亮晶"],["C","晶"]],[["F","满天都是"],["C","小星"],["G","星"],["C",""]]],
+  prog:["C","C","F","C","F","C","G","C"]},
+ {id:"bday",t:"生日快乐",key:"G",bpm:90,pat:"waltz",chords:["G","D","C"],note:"3/4 拍，数\"1 2 3\"，第一拍扫重一点。",
+  lines:[[["G","祝你生日"],["D","快乐"]],[["D","祝你生日"],["G","快乐"]],[["G","祝你生日"],["C","快乐"]],[["G","祝你"],["D","生日"],["G","快乐"]]],
+  prog:["G","D","D","G","G","C","G","D","G"]},
+ {id:"farewell",t:"送别",key:"C",bpm:72,pat:"folk",chords:["C","F","G","Am"],note:"李叔同填词（已进入公版）。速度慢，适合练换和弦。",
+  lines:[[["C","长亭外 "],["F","古道"],["C","边"]],[["C","芳草碧"],["G","连天"]],[["C","晚风拂"],["F","柳笛"],["C","声残"]],[["G","夕阳山外"],["C","山"]],[["F","天之涯 "],["C","地之角"]],[["Am","知交半"],["G","零落"]],[["C","一壶浊"],["F","酒尽"],["C","余欢"]],[["G","今宵别梦"],["C","寒"]]],
+  prog:["C","F","C","G","C","F","G","C","F","C","Am","G","C","F","G","C"]},
+ {id:"canon",t:"卡农进行",key:"C",bpm:70,pat:"folk",chords:["C","G","Am","Em","Fmaj7"],note:"帕赫贝尔《卡农》的和弦，无数流行歌用的都是它。没有歌词，弹循环就很好听。",
+  lines:[[["C","C"],["G","G"],["Am","Am"],["Em","Em"]],[["Fmaj7","Fmaj7"],["C","C"],["Fmaj7","Fmaj7"],["G","G"]]],
+  prog:["C","G","Am","Em","Fmaj7","C","Fmaj7","G"]},
+ {id:"grace",t:"Amazing Grace 奇异恩典",key:"G",bpm:80,pat:"waltz",chords:["G","C","D","Em"],note:"18 世纪的赞美诗，3/4 拍，旋律很舒服。",
+  lines:[[["G","Amazing "],["G","grace, how "],["C","sweet the "],["G","sound"]],[["G","That saved a "],["G","wretch like "],["D","me"]],[["G","I once was "],["G","lost, but "],["C","now am "],["G","found"]],[["Em","Was blind, but "],["D","now I "],["G","see"]]],
+  prog:["G","G","C","G","G","G","D","D","G","G","C","G","Em","D","G","G"]},
+];
+
+/* ---------------- 节奏型 ---------------- */
+const PATTERNS={
+  click4:{t:"只要节拍器 4/4",slots:["-","-","-","-","-","-","-","-"],beats:4},
+  click3:{t:"只要节拍器 3/4",slots:["-","-","-","-","-","-"],beats:3},
+  down4:{t:"全下扫 ↓ ↓ ↓ ↓",slots:["D","-","D","-","D","-","D","-"],beats:4},
+  eighth:{t:"八分下上 ↓↑↓↑↓↑↓↑",slots:["D","U","D","U","D","U","D","U"],beats:4},
+  folk:{t:"民谣万能型 ↓ ↓↑ ↑↓↑",slots:["D","-","D","U","-","U","D","U"],beats:4},
+  waltz:{t:"华尔兹 3/4 ↓ ↓↑ ↓↑",slots:["D","-","D","U","D","U"],beats:3},
+};
+const PROGS={
+  "Em Am":["Em","Am"],"C G":["C","G"],"C G Am Em":["C","G","Am","Em"],"G D Em C":["G","D","Em","C"],
+  "卡农 C G Am Em F C F G":["C","G","Am","Em","Fmaj7","C","Fmaj7","G"],"C Am F G":["C","Am","Fmaj7","G"],
+};
+
+/* ---------------- 进度与打卡 ---------------- */
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`};
+function streakInfo(){
+  const days=store.get("days",[]); const set=new Set(days); let n=0; const d=new Date();
+  if(!set.has(today())) d.setDate(d.getDate()-1);
+  while(set.has(`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`)){n++;d.setDate(d.getDate()-1)}
+  return {streak:n,total:days.length,todayDone:set.has(today())};
+}
+function markPracticed(){const days=store.get("days",[]); if(!days.includes(today())){days.push(today());store.set("days",days)}}
+
+/* 今日 10 分钟练习 */
+const ROUTINE=[{t:"调音",s:60,href:"#tune"},{t:"爬格子热身",s:120,href:"#rhythm-click60"},{t:"一分钟换和弦 ×2",s:150,href:"#chords-challenge"},{t:"扫弦跟练",s:270,href:"#rhythm-folk"}];
+const RT={running:false,left:600,timer:null};
+function routineStep(){let el=600-RT.left;for(let i=0;i<ROUTINE.length;i++){if(el<ROUTINE[i].s) return i; el-=ROUTINE[i].s} return ROUTINE.length-1}
+function fmt(s){s=Math.max(0,Math.ceil(s));return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`}
+function routineToggle(){
+  if(RT.running){RT.running=false;clearInterval(RT.timer)}
+  else{ if(RT.left<=0) RT.left=600; RT.running=true; let last=Date.now();
+    RT.timer=setInterval(()=>{const n=Date.now();RT.left-=(n-last)/1000;last=n;
+      if(RT.left<=0){RT.left=0;RT.running=false;clearInterval(RT.timer);markPracticed();try{ac();click(ac().currentTime+0.01,true);click(ac().currentTime+0.25,true)}catch(e){} if(route().page==="learn") render()}
+      paintRoutine()},250)}
+  paintRoutine();
+}
+function paintRoutine(){
+  const mt=$("#miniTimer"); mt.hidden=!RT.running; mt.textContent=`今日练习 ${fmt(RT.left)} · ${ROUTINE[routineStep()].t}`;
+  const box=$("#routine"); if(!box) return;
+  $("#rtTime").textContent=fmt(RT.left);
+  $("#rtBtn").textContent=RT.running?"暂停":(RT.left<600&&RT.left>0?"继续":"开始 10 分钟练习");
+  const cur=routineStep();
+  $$("#routine li").forEach((li,i)=>{li.style.fontWeight=(RT.running||RT.left<600)&&i===cur?"700":"400";li.style.color=(RT.left<600&&i<cur)?"var(--muted)":"inherit"});
+}
+$("#miniTimer").onclick=()=>{location.hash="#learn"};
+
+/* ---------------- 页面 ---------------- */
+function route(){
+  const h=(location.hash||"#learn").slice(1);
+  if(h.startsWith("lesson-")) return {page:"lesson",n:parseInt(h.slice(7),10)};
+  if(h.startsWith("rhythm")) return {page:"rhythm",preset:h.slice(7)};
+  if(h.startsWith("chords")) return {page:"chords",sub:h.slice(7)};
+  if(h.startsWith("song-")) return {page:"songs",id:h.slice(5)};
+  return {page:["learn","tune","songs"].includes(h)?h:"learn"};
+}
+let cleanup=null;
+function render(){
+  if(cleanup){cleanup();cleanup=null}
+  const r=route(), app=$("#app");
+  $$("#tabs a").forEach(a=>a.classList.toggle("on",a.dataset.tab===(r.page==="lesson"?"learn":r.page)));
+  ({learn:pageLearn,lesson:pageLesson,tune:pageTune,chords:pageChords,rhythm:pageRhythm,songs:pageSongs})[r.page](app,r);
+  if(!r.sub) window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",render);
+
+function pageLearn(app){
+  const done=store.get("done",[]); const s=streakInfo();
+  const next=LESSONS.findIndex((_,i)=>!done.includes(i));
+  const guitar=store.get("myGuitar","");
+  let html=`<p class="eyebrow">零基础木吉他</p><h1>从抱起吉他，到弹完第一首歌</h1>
+  <p class="muted">12 个小课，每课 5～15 分钟。按顺序走，每天练一点就够了。</p>
+  <div class="card stack">
+   <div class="stat"><div><b>${done.length}/${LESSONS.length}</b><span>课程完成</span></div><div><b>${s.streak}</b><span>连续练琴天数</span></div><div><b>${s.total}</b><span>累计练琴天数</span></div></div>
+   ${next>=0?`<a class="btn primary big" href="#lesson-${next+1}" style="text-align:center;text-decoration:none">${done.length?"继续":"开始"}第 ${next+1} 课：${esc(LESSONS[next].t)}</a>`:`<p><b>全部课程完成了！</b>接下来去曲子页多弹歌，或者在和弦页挑战更多和弦。</p>`}
+  </div>
+  <div class="card" id="routine">
+   <div class="row" style="justify-content:space-between"><h2 style="margin:0">今日 10 分钟练习</h2><span class="chip ${s.todayDone?"on":""}">${s.todayDone?"今天已打卡":"今天还没练"}</span></div>
+   <ol style="padding-left:20px;margin:8px 0">${ROUTINE.map(x=>`<li><a href="${x.href}">${x.t}</a> <span class="muted small">${Math.round(x.s/60*10)/10} 分钟</span></li>`).join("")}</ol>
+   <div class="row"><span class="bpm" id="rtTime" style="font-size:32px">10:00</span><button class="btn primary" id="rtBtn">开始 10 分钟练习</button></div>
+   <p class="small muted" style="margin:6px 0 0">计时会在你切到别的页面时继续走，顶部会显示剩余时间。练满 10 分钟自动打卡。</p>
+  </div>
+  <div class="path">`;
+  LESSONS.forEach((l,i)=>{
+    if(l.unit) html+=`<div class="unit">${esc(l.unit)}</div>`;
+    const cls=done.includes(i)?"done":(i===next?"next":"");
+    html+=`<a class="step ${cls}" href="#lesson-${i+1}"><span class="dot">${done.includes(i)?"✓":i+1}</span><span><span class="t">${esc(l.t)}</span><br><span class="d">${l.m} 分钟 · ${esc(l.goal)}</span></span></a>`;
+  });
+  html+=`</div>
+  <div class="card stack" style="margin-top:14px">
+   <h2>我的吉他</h2>
+   <p class="small muted">${guitar?esc(guitar):"还没填型号。查到后填在这里，方便以后买弦、换配件。"}</p>
+   <div class="row"><input id="gIn" placeholder="例如：YAMAHA FG800" value="${esc(guitar)}" style="flex:1;min-width:0;font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)"><button class="btn" id="gSave">保存</button></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+   <h2>想看视频？免费资源</h2>
+   <ul style="padding-left:20px;margin:0">
+    <li><a href="https://www.justinguitar.com/categories/beginner-guitar-lessons-grade-1" target="_blank" rel="noopener">JustinGuitar 免费入门课</a>（英文，最系统的免费课程之一）</li>
+    <li><a href="https://search.bilibili.com/all?keyword=%E6%9C%A8%E5%90%89%E4%BB%96%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8" target="_blank" rel="noopener">B 站搜索"木吉他零基础入门"</a>（中文视频很多，挑播放量高的系列跟）</li>
+   </ul>
+  </div>`;
+  app.innerHTML=html;
+  $("#rtBtn").onclick=routineToggle; paintRoutine();
+  $("#gSave").onclick=()=>{store.set("myGuitar",$("#gIn").value.trim());render()};
+}
+
+function pageLesson(app,r){
+  const i=r.n-1, l=LESSONS[i]; if(!l){location.hash="#learn";return}
+  const done=store.get("done",[]); const tk=store.get("tasks",{});
+  app.innerHTML=`<a href="#learn" class="small">← 课程路线</a>
+  <p class="eyebrow" style="margin-top:10px">第 ${r.n} 课 · 约 ${l.m} 分钟</p><h1>${esc(l.t)}</h1>
+  <div class="tip"><b>这一课的目标：</b>${esc(l.goal)}</div>
+  <div class="lesson-body">${l.body}</div>
+  <div class="card" style="margin-top:14px"><h2>练习任务</h2>
+   ${l.tasks.map((t,k)=>`<label class="task"><input type="checkbox" data-k="${i}-${k}" ${tk[`${i}-${k}`]?"checked":""}><span>${esc(t)}</span></label>`).join("")}
+  </div>
+  <div class="row" style="margin-top:14px;justify-content:space-between">
+   ${i>0?`<a class="btn" href="#lesson-${i}">上一课</a>`:"<span></span>"}
+   <button class="btn primary" id="doneBtn">${done.includes(i)?"已完成 ✓（再点取消）":"完成这一课"}</button>
+  </div>`;
+  $$(".task input",app).forEach(cb=>cb.onchange=()=>{const t=store.get("tasks",{});t[cb.dataset.k]=cb.checked;store.set("tasks",t)});
+  $("#doneBtn").onclick=()=>{let d=store.get("done",[]); if(d.includes(i)) d=d.filter(x=>x!==i); else {d.push(i);markPracticed()} store.set("done",d);
+    if(d.includes(i)&&LESSONS[i+1]) location.hash=`#lesson-${i+2}`; else render()};
+}
+
+/* ---------------- 调音器 ---------------- */
+function pageTune(app){
+  app.innerHTML=`<h1>调音器</h1><p class="muted small">标准调音，从粗到细：E A D G B E。单独弹一根空弦，让指针停在中间。</p>
+  <div class="card tuner stack">
+    <div><div class="note-big" id="tNote">–</div><div class="hz" id="tHz">弹一根弦试试</div></div>
+    <div class="meter" aria-hidden="true"><div class="scale"></div><div class="needle" id="tNeedle"></div><div class="ticks"><span>-50</span><span>-25</span><span>0</span><span>+25</span><span>+50</span></div></div>
+    <div class="verdict" id="tVerdict"></div>
+    <div><button class="btn primary big" id="tStart">开始听音</button></div>
+    <div class="notice" id="tMsg" hidden></div>
+  </div>
+  <div class="card stack" style="margin-top:14px">
+    <div class="row" style="justify-content:space-between"><h2 style="margin:0">选弦</h2>
+     <label class="small row" style="gap:6px"><input type="checkbox" id="tAuto" checked style="accent-color:var(--accent)">自动识别是哪根弦</label></div>
+    <div class="strings" id="tStrings">${STRINGS.map((s,i)=>`<button data-i="${i}"><b>${s.note}</b><span>${s.n} 弦${s.hint?" · "+s.hint:""}</span></button>`).join("")}</div>
+    <p class="small muted" style="margin:0">点一根弦会播放它的<b>标准音</b>，可以用耳朵对：两个声音一样高、不再"哇哇"地起伏，就准了。</p>
+  </div>
+  <div class="card small" style="margin-top:14px"><b>怎么拧：</b>屏幕说"偏低"就把这根弦拧紧（音变高），"偏高"就放松。每次只拧一点点。不知道哪个弦钮连哪根弦，顺着弦摸到琴头就知道了。</div>`;
+  let sel=-1, stream=null, raf=0, actx=null, hist=[];
+  const btns=$$("#tStrings button");
+  btns.forEach(b=>b.onclick=()=>{sel=+b.dataset.i; $("#tAuto").checked=false; paintSel(); refTone(STRINGS[sel].midi)});
+  $("#tAuto").onchange=e=>{if(e.target.checked){sel=-1;paintSel()}};
+  function paintSel(hit=-1){btns.forEach((b,i)=>{b.classList.toggle("on",i===sel);b.classList.toggle("hit",i===hit&&i!==sel)})}
+  const msg=t=>{const m=$("#tMsg");m.hidden=!t;m.innerHTML=t||""};
+  async function start(){
+    if(stream){stop();return}
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){msg(noMic());return}
+    try{
+      stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+    }catch(e){msg(noMic());stream=null;return}
+    actx=ac(); const src=actx.createMediaStreamSource(stream); const an=actx.createAnalyser(); an.fftSize=4096; src.connect(an);
+    const buf=new Float32Array(an.fftSize); $("#tStart").textContent="停止"; msg("");
+    let frame=0;
+    const loop=()=>{raf=requestAnimationFrame(loop); if(frame++%3) return; an.getFloatTimeDomainData(buf);
+      const f=detectPitch(buf,actx.sampleRate); if(f>60&&f<1200){hist.push(f); if(hist.length>5) hist.shift(); show(median(hist))} else if(f<0){hist=[]}};
+    loop();
+  }
+  function stop(){cancelAnimationFrame(raf); if(stream) stream.getTracks().forEach(t=>t.stop()); stream=null; $("#tStart").textContent="开始听音"}
+  function noMic(){return `<b>这里拿不到麦克风。</b>如果你在 Claude 的链接里打开，它不允许网页用麦克风；用电脑上那份文件版（我放在你 Mac 上的那份）就能自动听音。现在可以先点下面的弦，用标准音按耳朵对。`}
+  function show(f){
+    const NAMES=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+    let target, ti;
+    if(sel>=0){ti=sel;target=STRINGS[sel].midi}
+    else{ti=0;let best=1e9; STRINGS.forEach((s,i)=>{const d=Math.abs(12*Math.log2(f/midiHz(s.midi)));if(d<best){best=d;ti=i}}); target=STRINGS[ti].midi}
+    const cents=1200*Math.log2(f/midiHz(target));
+    const near=Math.round(69+12*Math.log2(f/440));
+    $("#tNote").innerHTML=`${NAMES[((near%12)+12)%12]}<sub>${Math.floor(near/12)-1}</sub>`;
+    $("#tHz").textContent=`${f.toFixed(1)} Hz · 目标 ${STRINGS[ti].n} 弦 ${STRINGS[ti].note}（${midiHz(target).toFixed(1)} Hz）`;
+    const c=Math.max(-50,Math.min(50,cents)); $("#tNeedle").style.left=`${50+c}%`;
+    const v=$("#tVerdict");
+    if(Math.abs(cents)>300){v.className="verdict lo";v.textContent=cents<0?"差得很远，偏低：多拧紧一些":"差得很远，偏高：多放松一些"}
+    else if(Math.abs(cents)<=5){v.className="verdict ok";v.textContent="准了 ✓"}
+    else if(cents<0){v.className="verdict lo";v.textContent=`偏低 ${Math.round(-cents)} 音分：拧紧一点`}
+    else{v.className="verdict hi";v.textContent=`偏高 ${Math.round(cents)} 音分：放松一点`}
+    paintSel(ti);
+  }
+  $("#tStart").onclick=start;
+  cleanup=stop;
+}
+function median(a){const s=[...a].sort((x,y)=>x-y);return s[Math.floor(s.length/2)]}
+function detectPitch(buf,sr){
+  // 自相关音高检测（只看 60~1200Hz 的周期范围）
+  let n=buf.length, rms=0; for(let i=0;i<n;i++) rms+=buf[i]*buf[i]; rms=Math.sqrt(rms/n); if(rms<0.008) return -1;
+  const minLag=Math.floor(sr/1200), maxLag=Math.min(Math.floor(sr/60),n>>1), W=n-maxLag;
+  const c=new Float32Array(maxLag+2);
+  for(let lag=minLag;lag<=maxLag+1;lag++){let s=0;for(let i=0;i<W;i++) s+=buf[i]*buf[i+lag]; c[lag]=s}
+  let e0=0; for(let i=0;i<W;i++) e0+=buf[i]*buf[i];
+  // 取第一个超过最大值 90% 的峰，避免跳到低八度
+  let mx=0; for(let l=minLag;l<=maxLag;l++) if(c[l]>mx) mx=c[l];
+  if(mx<e0*0.3) return -1;
+  let lag=-1; for(let l=minLag+1;l<=maxLag;l++){ if(c[l]>c[l-1]&&c[l]>=c[l+1]&&c[l]>0.9*mx){lag=l;break} }
+  if(lag<0) return -1;
+  const a=c[lag-1],b=c[lag],d=c[lag+1], sh=(a-d)/(2*(a-2*b+d)||1);
+  return sr/(lag+(isFinite(sh)?sh:0));
+}
+
+/* ---------------- 和弦页 ---------------- */
+function pageChords(app,r){
+  const groups=[[1,"第一批（先学这几个）"],[2,"第二批"],[3,"进阶"],[4,"横按"]];
+  const best=store.get("best",{});
+  const keys=Object.keys(CHORDS);
+  app.innerHTML=`<h1>和弦</h1><p class="muted small">点任何一个和弦都能听到声音。圆点里的数字是手指：1 食指、2 中指、3 无名指、4 小指；○ 空弦弹，× 不弹。</p>
+  ${groups.map(([lv,t])=>`<h2 style="margin-top:16px">${t}</h2><div class="diagrams">${keys.filter(k=>CHORDS[k].lv===lv).map(chordCard).join("")}</div>`).join("")}
+  <div class="card stack" id="challenge" style="margin-top:18px">
+   <h2 style="margin:0">一分钟换和弦挑战</h2>
+   <p class="small muted" style="margin:0">选两个和弦，60 秒里来回换，每换好一次（并扫一下）就点大按钮或按空格。记录会自动保存。</p>
+   <div class="row"><select id="cA">${keys.map(k=>`<option value="${k}">${esc(chordName(k))}</option>`).join("")}</select><span>↔</span><select id="cB">${keys.map(k=>`<option value="${k}">${esc(chordName(k))}</option>`).join("")}</select></div>
+   <div class="row" style="justify-content:space-between"><div><div class="count" id="cCount">0</div><span class="small muted">本次次数</span></div><div style="text-align:right"><div class="count" id="cTime" style="font-size:36px">60</div><span class="small muted">秒</span></div></div>
+   <button class="tapbtn" id="cTap">开始</button>
+   <p class="small" id="cBest"></p>
+  </div>`;
+  const A=$("#cA"),B=$("#cB"); A.value=store.get("pairA","C"); B.value=store.get("pairB","G");
+  let n=0, left=60, tm=null, running=false;
+  const pk=()=>`${A.value}-${B.value}`;
+  const paintBest=()=>{const b=store.get("best",{})[pk()];$("#cBest").textContent=b?`${chordName(A.value)} ↔ ${chordName(B.value)} 最好成绩：${b.n} 次（${b.d}）`:`${chordName(A.value)} ↔ ${chordName(B.value)} 还没有记录`};
+  A.onchange=B.onchange=()=>{store.set("pairA",A.value);store.set("pairB",B.value);paintBest()};
+  paintBest();
+  const tap=()=>{
+    if(!running){ n=0;left=60;running=true;$("#cTap").textContent="换好一次 +1";$("#cCount").textContent=0; try{click(ac().currentTime+0.01,true)}catch(e){}
+      const t0=Date.now(); tm=setInterval(()=>{left=60-(Date.now()-t0)/1000;$("#cTime").textContent=Math.max(0,Math.ceil(left));
+        if(left<=0){clearInterval(tm);running=false;try{click(ac().currentTime+0.01,true);click(ac().currentTime+0.2,true)}catch(e){}
+          const all=store.get("best",{}); const old=all[pk()]; let note=`时间到！这次 ${n} 次。`;
+          if(!old||n>old.n){all[pk()]={n,d:today()};store.set("best",all);note+=old?" 破纪录了！":""}
+          markPracticed(); $("#cTap").textContent="再来一次"; paintBest(); $("#cBest").textContent=note+" "+$("#cBest").textContent;}},100);
+      return }
+    n++; $("#cCount").textContent=n;
+  };
+  $("#cTap").onclick=tap;
+  const key=e=>{if(e.code==="Space"&&route().page==="chords"&&document.activeElement.tagName!=="SELECT"){e.preventDefault();tap()}};
+  document.addEventListener("keydown",key);
+  cleanup=()=>{clearInterval(tm);document.removeEventListener("keydown",key)};
+  if(r.sub==="challenge") setTimeout(()=>$("#challenge").scrollIntoView({behavior:"smooth"}),50);
+}
+
+/* ---------------- 节奏页（节拍器 + 扫弦跟练） ---------------- */
+const RS={bpm:store.get("bpm",70),pat:store.get("pat","folk"),prog:store.get("prog","C G Am Em"),progList:null,strumOn:store.get("strumOn",true),clickOn:true};
+const PRESETS={click60:{bpm:60,pat:"click4"},folk:{bpm:70,pat:"folk",prog:"C G Am Em"},canon:{bpm:70,pat:"folk",prog:"卡农 C G Am Em F C F G"}};
+let transport=null;
+function pageRhythm(app,r){
+  const p=PRESETS[r.preset]; if(p){Object.assign(RS,p);if(p.prog){RS.progList=null}}
+  if(r.preset&&r.preset.startsWith("song-")){const s=SONGS.find(x=>x.id===r.preset.slice(5)); if(s){RS.bpm=s.bpm;RS.pat=s.pat;RS.progList=s.prog;RS.prog="__song:"+s.t}}
+  const progOptions=Object.keys(PROGS).map(k=>`<option value="${k}">${k}</option>`).join("")+(RS.progList?`<option value="${esc(RS.prog)}">${esc(RS.prog.replace("__song:","曲子：")+"")}</option>`:"");
+  app.innerHTML=`<h1>节奏</h1><p class="muted small">节拍器和扫弦跟练在一起：选好节奏型和和弦，App 替你弹伴奏，你跟着高亮的箭头扫。</p>
+  <div class="card stack">
+    <div class="row" style="justify-content:space-between">
+      <button class="btn" id="rMinus" aria-label="减慢">−5</button>
+      <div style="text-align:center"><div class="bpm" id="rBpm">${RS.bpm}</div><div class="small muted">每分钟拍数</div></div>
+      <button class="btn" id="rPlus" aria-label="加快">+5</button>
+    </div>
+    <input type="range" id="rRange" min="40" max="180" value="${RS.bpm}" aria-label="速度">
+    <div class="row"><button class="btn primary big" id="rPlay" style="flex:1">开始</button><button class="btn big" id="rTap">打拍子测速</button></div>
+  </div>
+  <div class="card stack" style="margin-top:14px">
+    <label class="small">节奏型<br><select id="rPat" style="width:100%">${Object.entries(PATTERNS).map(([k,v])=>`<option value="${k}">${v.t}</option>`).join("")}</select></label>
+    <div class="beats" id="rBeats"></div>
+    <label class="small">和弦进行（每个和弦一小节）<br><select id="rProg" style="width:100%">${progOptions}</select></label>
+    <div class="prog" id="rProgView"></div>
+    <div class="nowchord"><div class="big" id="rNow">–</div><div style="width:110px" id="rNowSvg"></div><div class="small muted" id="rNext"></div></div>
+    <div class="row small"><label class="row" style="gap:6px"><input type="checkbox" id="rStrum" ${RS.strumOn?"checked":""} style="accent-color:var(--accent)">App 弹伴奏</label><label class="row" style="gap:6px"><input type="checkbox" id="rClick" checked style="accent-color:var(--accent)">节拍声</label></div>
+  </div>
+  <div class="card small" style="margin-top:14px"><b>练法：</b>先关掉"App 弹伴奏"，只听节拍声自己扫；跟不上就把速度降到 50～60。能连续弹 4 遍不停，再每次加 5。</div>`;
+  $("#rPat").value=RS.pat; $("#rProg").value=RS.progList?RS.prog:RS.prog;
+  const prog=()=>RS.progList&&RS.prog.startsWith("__song:")?RS.progList:(PROGS[RS.prog]||PROGS["C G"]);
+  function paintBeats(){
+    const P=PATTERNS[RS.pat], lb=P.beats===3?["1","嗒","2","嗒","3","嗒"]:["1","嗒","2","嗒","3","嗒","4","嗒"];
+    $("#rBeats").style.gridTemplateColumns=`repeat(${P.slots.length},1fr)`;
+    $("#rBeats").innerHTML=P.slots.map((s,i)=>`<div class="beat" data-i="${i}"><div class="ar">${s==="D"?"↓":s==="U"?"↑":"·"}</div><div class="lb">${lb[i]}</div></div>`).join("");
+    $("#rProgView").innerHTML=prog().map((c,i)=>`<span data-i="${i}">${esc(chordName(c))}</span>`).join("");
+    showChord(0);
+  }
+  function showChord(bar){
+    const pr=prog(), c=pr[bar%pr.length], nx=pr[(bar+1)%pr.length];
+    $("#rNow").textContent=chordName(c); $("#rNowSvg").innerHTML=chordSVG(c); $("#rNext").textContent=`下一个：${chordName(nx)}`;
+    $$("#rProgView span").forEach((s,i)=>s.classList.toggle("now",i===bar%pr.length));
+  }
+  const setBpm=v=>{RS.bpm=Math.max(40,Math.min(180,Math.round(v)));store.set("bpm",RS.bpm);$("#rBpm").textContent=RS.bpm;$("#rRange").value=RS.bpm};
+  $("#rMinus").onclick=()=>setBpm(RS.bpm-5); $("#rPlus").onclick=()=>setBpm(RS.bpm+5); $("#rRange").oninput=e=>setBpm(+e.target.value);
+  $("#rPat").onchange=e=>{RS.pat=e.target.value;store.set("pat",RS.pat);restartIfPlaying();paintBeats()};
+  $("#rProg").onchange=e=>{RS.prog=e.target.value;if(!RS.prog.startsWith("__song:")){store.set("prog",RS.prog)}restartIfPlaying();paintBeats()};
+  $("#rStrum").onchange=e=>{RS.strumOn=e.target.checked;store.set("strumOn",RS.strumOn)};
+  $("#rClick").onchange=e=>{RS.clickOn=e.target.checked};
+  let taps=[]; $("#rTap").onclick=()=>{const t=performance.now(); taps=taps.filter(x=>t-x<3000); taps.push(t); if(taps.length>=3){const iv=(taps[taps.length-1]-taps[0])/(taps.length-1); setBpm(60000/iv)}};
+  function restartIfPlaying(){if(transport){stopT();startT()}}
+  function startT(){
+    const ctx=ac(); const P=PATTERNS[RS.pat]; let step=0, next=ctx.currentTime+0.12; const q=[];
+    const sched=()=>{const dur=60/RS.bpm/2; while(next<ctx.currentTime+0.12){
+        const slot=step%P.slots.length, bar=Math.floor(step/P.slots.length), pr=prog();
+        if(RS.clickOn&&slot%2===0) click(next,slot===0);
+        const s=P.slots[slot]; if(RS.strumOn&&(s==="D"||s==="U")) strum(pr[bar%pr.length],next,s,slot===0?0.6:0.45);
+        q.push({t:next,slot,bar}); next+=dur; step++; }};
+    sched(); const iv=setInterval(sched,25);
+    let lastBar=-1; const draw=()=>{const now=ctx.currentTime; while(q.length&&q[0].t<=now){const e=q.shift();
+        $$("#rBeats .beat").forEach((b,i)=>b.classList.toggle("now",i===e.slot)); if(e.bar!==lastBar){lastBar=e.bar;showChord(e.bar)}}
+      transport.raf=requestAnimationFrame(draw)};
+    transport={iv,raf:requestAnimationFrame(draw)}; $("#rPlay").textContent="停止"; markPracticed();
+  }
+  function stopT(){ if(!transport) return; clearInterval(transport.iv); cancelAnimationFrame(transport.raf); transport=null; ringing.splice(0).forEach(r=>{try{r.g.gain.setTargetAtTime(0,ac().currentTime,0.05)}catch(e){}});
+    const b=$("#rPlay"); if(b) b.textContent="开始"; $$("#rBeats .beat").forEach(b=>b.classList.remove("now")); }
+  $("#rPlay").onclick=()=>transport?stopT():startT();
+  paintBeats();
+  cleanup=stopT;
+}
+
+/* ---------------- 曲子页 ---------------- */
+function pageSongs(app,r){
+  const s=r.id&&SONGS.find(x=>x.id===r.id);
+  if(!s){
+    app.innerHTML=`<h1>入门曲子</h1><p class="muted small">全部是不受版权限制的公版曲目，从易到难排。先在"和弦"页确认每个和弦都会按。</p>
+    <div class="stack">${SONGS.map(x=>`<a class="card" href="#song-${x.id}" style="text-decoration:none;color:inherit;display:block"><div class="row" style="justify-content:space-between"><b style="font-size:18px">${esc(x.t)}</b><span class="chip">${PATTERNS[x.pat].beats}/4 拍 · ${x.bpm}</span></div><div class="prog" style="margin-top:6px">${x.chords.map(c=>`<span>${esc(chordName(c))}</span>`).join("")}</div></a>`).join("")}</div>`;
+    return;
+  }
+  app.innerHTML=`<a href="#songs" class="small">← 全部曲子</a><h1>${esc(s.t)}</h1>
+  <p class="muted small">${esc(s.note)}</p>
+  <div class="row"><a class="btn primary" href="#rhythm-song-${s.id}">跟着伴奏练（${PATTERNS[s.pat].t.split(" ")[0]} · ${s.bpm}）</a></div>
+  <h2 style="margin-top:16px">用到的和弦</h2><div class="diagrams">${s.chords.map(chordCard).join("")}</div>
+  <h2 style="margin-top:16px">和弦谱</h2><p class="small muted">和弦标在字的上方，唱到那个字时换和弦。</p>
+  <div class="card sheet">${s.lines.map(l=>`<div class="line">${l.map(([c,w])=>`<span class="seg"><span class="c">${esc(chordName(c))}</span><span class="w">${esc(w)||"&nbsp;"}</span></span>`).join("")}</div>`).join("")}</div>`;
+}
+
+/* 首次进入 */
+render();
+</script>
+</body></html>
